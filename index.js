@@ -89,6 +89,7 @@ $(".btn").on("click", function(event) {
     gameOver = true;
     wrong.play();
     $("h1").text("Game over. Your final score was " + score + ".");
+    $("h2#newGame").remove();
     $("<h2 id='newGame'>Click any button to start anew!</h2>").insertAfter("h1");
   }
 });

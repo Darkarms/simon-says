@@ -14,6 +14,28 @@ body {
   color: #FEF2BF;
 }
 
+#volLabel { 
+  color: #FEF2BF;
+  font-family: 'Press Start 2P', cursive;
+}
+
+#volSlider { 
+  width: 300px;
+}
+
+#startBtn { 
+  background-color: red;
+  font-weight: 800;
+  font-size: 30px;
+  padding: 10px;
+  color: black;
+  border-radius: 30%;
+}
+
+.startButtonContainer { 
+  margin-top: 20px;
+}
+
 .container {
   display: block;
   width: 50%;
@@ -22,10 +44,10 @@ body {
 }
 
 .btn {
-  margin: 25px;
+  margin: 15px;
   display: inline-block;
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
   border: 10px solid black;
   border-radius: 20%;
 }
@@ -55,3 +77,11 @@ body {
   box-shadow: 0 0 20px white;
   background-color: grey;
 }
+
+/* @media (min-width: 400px) and (max-width: 1150px) { 
+  .btn { 
+    margin: 15px;
+    height: 150px;
+    width: 150px;
+  }
+} */

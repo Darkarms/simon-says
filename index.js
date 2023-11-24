@@ -5,19 +5,13 @@ let sequence = [];
 let sequenceGuessStep = 0;
 let gameOver = true;
 let score = 0;
+let volume = 0.5;
+let audio = new Audio("./sounds/blue.mp3");
 
 //create function for next sequence
 function generateNextSequence() { 
   var nextSequence = Math.floor(Math.random() * 4) + 1;
   sequence.push(nextSequence);
-}
-
-//create function to run game
-function runGame() { 
-  resetGameObjects();
-
-  generateNextSequence();
-  animateSequence();
 }
 
 //create function to convert numbered selection to element ID
@@ -46,12 +40,15 @@ function getSelectionID(ID) {
 function animateSequence() { 
   for(let i = 0; i < sequence.length; i++) { 
     let selection = getSelectionID(sequence[i]);
-    let audio = new Audio("./sounds/" + selection + ".mp3");
+    
 
     let selectionID = "#" + selection;
     
     setTimeout(function() { 
       $(selectionID).addClass("pressed");
+      audio.src = "./sounds/" + selection + ".mp3";
+      audio.load();
+      audio.volume = volume;
       audio.play();
       setTimeout(function() { 
         $(selectionID).removeClass("pressed");
@@ -62,7 +59,10 @@ function animateSequence() {
 
 //create function to check if user selected correct sequence
 $(".btn").on("click", function(event) { 
-  let wrong = new Audio("./sounds/wrong.mp3");
+  audio.src = "./sounds/wrong.mp3";
+  audio.load();
+  audio.volume = volume;
+
   let targetElement = $(event.target).attr("id");
   // if the game is still going on and you got the correct selection
   if(!gameOver &&  targetElement == getSelectionID(sequence[sequenceGuessStep])) { 
@@ -87,7 +87,7 @@ $(".btn").on("click", function(event) {
   } else { 
     // you must have lost the game
     gameOver = true;
-    wrong.play();
+    audio.play();
     $("h1").text("Game over. Your final score was " + score + ".");
     $("h2#newGame").remove();
     $("<h2 id='newGame'>Click any button to start anew!</h2>").insertAfter("h1");
@@ -96,14 +96,16 @@ $(".btn").on("click", function(event) {
 
 $(window).on("keypress", function(){ 
   //if game was over and the user clicked a key, reset game values and start the game anew
-  console.log("Key was pressed");
-  if(gameOver) { 
-    resetGame();
-    generateNextSequence();
-    setTimeout(function() { 
-      animateSequence();
-    }, 500);
-  }
+  startGame();
+});
+
+$("#volSlider").on("input", function(){
+  console.log("updating volume");
+  volume = $("#volSlider").val() / 100;
+});
+
+$("#startBtn").on("click", function(){ 
+  startGame();
 });
 
 //create function to reset game objects
@@ -114,4 +116,14 @@ function resetGame() {
   score = 0;
   $("h2#newGame").remove();
   $("h1").text("Game over. Your final score was " + score + ".");
+}
+
+function startGame() { 
+  if(gameOver) { 
+    resetGame();
+    generateNextSequence();
+    setTimeout(function() { 
+      animateSequence();
+    }, 500);
+  }
 }
